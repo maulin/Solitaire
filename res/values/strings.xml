@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="newGame">New Game</string>
+    <string name="appName">Solitaire</string>
+<string name="exitGame">Exit Solitaire</string>
+<string name="companyName">ytbnc</string>
+
+</resources>
