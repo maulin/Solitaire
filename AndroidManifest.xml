@@ -5,7 +5,9 @@
       android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/appName">
         <activity android:name=".Solitaire"
-                  android:label="@string/appName">
+                  android:label="@string/appName"
+                  android:screenOrientation="landscape"
+                  android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

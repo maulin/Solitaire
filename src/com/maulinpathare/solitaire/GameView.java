@@ -21,7 +21,7 @@ public class GameView extends ScrollView implements OnTouchListener{
 	private boolean mPickUp, mVictory;
 	private Card mCard;
 	private final int mSpacing = 22;
-	private Paint rectPaint, wonPaint1, wonPaint2;
+	private Paint rectPaint1, rectPaint2, rectPaint3, rectPaint4, wonPaint1, wonPaint2;
 	
 	public GameView(Context context) {
         super(context);
@@ -47,7 +47,10 @@ public class GameView extends ScrollView implements OnTouchListener{
         this.setOnTouchListener(this);
         wonPaint1 = new Paint();
         wonPaint2 = new Paint();
-        rectPaint = new Paint();
+        rectPaint1 = new Paint();
+        rectPaint2 = new Paint();
+        rectPaint3 = new Paint();
+        rectPaint4 = new Paint();
 		wonPaint1.setColor(Color.WHITE);
 		wonPaint1.setTextSize(25);
 		wonPaint1.setAntiAlias(true);
@@ -58,9 +61,21 @@ public class GameView extends ScrollView implements OnTouchListener{
 		wonPaint2.setAntiAlias(true);
 		wonPaint2.setFakeBoldText(true);
 		wonPaint2.setTextAlign(Paint.Align.CENTER);
-		rectPaint.setColor(Color.GREEN);
-		rectPaint.setAlpha(100);
-		//rectPaint.setStyle(Paint.Style.STROKE);
+		rectPaint1.setColor(Color.GREEN);
+		rectPaint1.setAlpha(100);
+		rectPaint2.setColor(Color.RED);
+		rectPaint2.setTextSize(50);
+		rectPaint2.setAntiAlias(true);
+		rectPaint2.setFakeBoldText(true);
+		rectPaint3.setColor(Color.BLACK);
+		rectPaint3.setTextSize(50);
+		rectPaint3.setAntiAlias(true);
+		rectPaint3.setFakeBoldText(true);
+		rectPaint4.setColor(Color.BLUE);
+		rectPaint4.setTextSize(50);
+		rectPaint4.setAntiAlias(true);
+		rectPaint4.setFakeBoldText(true);
+		
     }
 	
     @Override 
@@ -81,11 +96,15 @@ public class GameView extends ScrollView implements OnTouchListener{
 	    	if(mD.empty() == false){
 	    		mCanvas.drawBitmap(mD.peek().getBackImage(), null, mD.peek().getRect(), null);	
 	    	}
-	    	mCanvas.drawRect(70, 0, 119, 70, rectPaint);
-	    	mCanvas.drawRect(210, 0, 259, 70, rectPaint);
-	    	mCanvas.drawRect(280, 0, 329, 70, rectPaint);
-	    	mCanvas.drawRect(350, 0, 399, 70, rectPaint);
-	    	mCanvas.drawRect(420, 0, 469, 70, rectPaint);
+	    	mCanvas.drawText("A", 219, 50, rectPaint3);
+	    	mCanvas.drawText("A", 289, 50, rectPaint2);
+	    	mCanvas.drawText("A", 359, 50, rectPaint3);
+	    	mCanvas.drawText("A", 429, 50, rectPaint2);
+	    	mCanvas.drawRect(70, 0, 119, 70, rectPaint1);
+	    	mCanvas.drawRect(210, 0, 259, 70, rectPaint1);
+	    	mCanvas.drawRect(280, 0, 329, 70, rectPaint1);
+	    	mCanvas.drawRect(350, 0, 399, 70, rectPaint1);
+	    	mCanvas.drawRect(420, 0, 469, 70, rectPaint1);
 	    	drawPile(mOpenPile);
 	    	drawPile(mPile1);
 	    	drawPile(mPile2);

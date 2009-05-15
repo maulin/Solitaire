@@ -5,23 +5,34 @@
 	android:layout_height="fill_parent">
 	<TextView 
 		android:text="@string/appName" 
-		android:textSize="15pt" 
+		android:textSize="30px" 
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" 
+		android:layout_height="wrap_content"
+ 		android:height="35px"
 		android:layout_weight="1" 
 		android:gravity="center"/>
+	<TextView 
+		android:text="Press the menu button to start" 
+		android:textSize="15px"
+		android:height="20px" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_weight="0" 
+		android:gravity="center"/>
+	<TextView 
+		android:text="This game will play in landscape mode" 
+		android:textSize="15px"
+		android:height="20px" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:layout_weight="0" 
+		android:gravity="center"/>		
 	<TextView 
 		android:text="@string/companyName" 
-		android:textSize="6pt" 
+		android:textSize="12px" 
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" 
+		android:layout_height="wrap_content"
+ 		android:height="12px"
 		android:layout_weight="1" 
 		android:gravity="center"/>
-	<TextView 
-	android:text="Press the menu button" 
-	android:textSize="6pt" 
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content" 
-	android:layout_weight="1" 
-	android:gravity="center"/>
 </LinearLayout>
