@@ -65,6 +65,10 @@ public final class R {
         public static final int sj=0x7f020033;
         public static final int sk=0x7f020034;
         public static final int sq=0x7f020035;
+        public static final int tca=0x7f020036;
+        public static final int tda=0x7f020037;
+        public static final int tha=0x7f020038;
+        public static final int tsa=0x7f020039;
     }
     public static final class layout {
         public static final int main=0x7f030000;

@@ -5,11 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 		
 public class Solitaire extends Activity{
     /** Called when the activity is first created. */
 	private Context mContext;
-	private GameView mG;
+	private ScrollView mGsv;
+	private GameView mGv;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,10 @@ public class Solitaire extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case 1:
-        	mG = new GameView(this);
-        	setContentView(mG);
+        	mGsv = new ScrollView(this);
+        	mGv = new GameView(this);
+        	mGsv.addView(mGv);
+        	setContentView(mGsv);
             return true;
         case 2:
             finish();
