@@ -10,7 +10,7 @@ import android.widget.ScrollView;
 public class Solitaire extends Activity{
     /** Called when the activity is first created. */
 	private Context mContext;
-	private ScrollView mGsv;
+	private GameScrollView mGsv;
 	private GameView mGv;
 	
     @Override
@@ -42,7 +42,7 @@ public class Solitaire extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case 1:
-        	mGsv = new ScrollView(this);
+        	mGsv = new GameScrollView(this);
         	mGv = new GameView(this);
         	mGsv.addView(mGv);
         	setContentView(mGsv);
