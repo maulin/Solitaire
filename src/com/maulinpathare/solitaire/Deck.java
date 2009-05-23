@@ -81,7 +81,7 @@ public class Deck {
 	}//end class Deck constructor
 	
 	public void shuffle(){
-		Random randGen = new Random(1);
+		Random randGen = new Random();
 		int r;
 		Card tempCard = new Card(mContext);
 		
