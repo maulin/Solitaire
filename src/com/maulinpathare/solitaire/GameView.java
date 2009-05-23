@@ -207,7 +207,7 @@ public class GameView extends View implements OnTouchListener{
 				mTemp.push(mOpenPile.pop());
 				mPickUp = true;
 			}
-			else if(mD.empty()){
+			else if(mD.empty() && !mOpenPile.empty()){
 				while(mOpenPile.empty() == false){
 					mCard = mOpenPile.pop();
 					mCard.setRect(0, 0, 49, 70);
@@ -218,7 +218,7 @@ public class GameView extends View implements OnTouchListener{
 				mPickUp = false;
 				mDone = true;
 			}
-			else if (mD.peek().getRect().contains(x, y)){//check if click happens on deck
+			else if (!mD.empty() && mD.peek().getRect().contains(x, y)){//check if click happens on deck
 				mCard = mD.deal();
 			mCard.setRect(70, 0, 119, 70);
 			mCard.setmOldRect(70, 0, 119, 70);
