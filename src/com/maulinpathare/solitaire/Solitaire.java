@@ -35,6 +35,7 @@ public class Solitaire extends Activity{
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(0, 1, 0, R.string.newGame);
         menu.add(0, 2, 0, R.string.exitGame);
+        menu.add(0, 3, 0, R.string.help);
         return result;
     }
     
@@ -49,6 +50,9 @@ public class Solitaire extends Activity{
             return true;
         case 2:
             finish();
+            return true;
+        case 3:
+        	setContentView(R.layout.help);
             return true;
         }
         return false;

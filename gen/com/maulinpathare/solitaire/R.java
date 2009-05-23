@@ -71,12 +71,14 @@ public final class R {
         public static final int tsa=0x7f020039;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int help=0x7f030000;
+        public static final int main=0x7f030001;
     }
     public static final class string {
         public static final int appName=0x7f040001;
         public static final int companyName=0x7f040003;
         public static final int exitGame=0x7f040002;
+        public static final int help=0x7f040004;
         public static final int newGame=0x7f040000;
     }
 }
