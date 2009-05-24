@@ -614,7 +614,7 @@ public class GameView extends View implements OnTouchListener{
 		if(pile.empty() == false){
 			for(int i = 0; i < pile.size(); i++){
 				if(pile.elementAt(i).isFaceUp()){
-					mCanvas.drawBitmap(pile.elementAt(i).getFrontImage(), null, 
+					mCanvas.drawBitmap(pile.elementAt(i).getFrontImage(), null,	
 							pile.elementAt(i).getRect(), null);
 				}
 				else{
