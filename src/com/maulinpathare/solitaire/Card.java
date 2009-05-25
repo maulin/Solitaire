@@ -16,6 +16,7 @@ public class Card extends ImageView{
 	private Rect mRect;
 	private Rect mOldRect;
 	private int mPile;
+	private int mOldPile;
 	
 	public Card(Context context, Resources res, int image, String suite, int rank){
 		super(context);
@@ -30,6 +31,7 @@ public class Card extends ImageView{
 		mRank = rank;
 		mFaceUp = false;
 		mPile = 0;
+		mOldPile = 0;
 		mRect = new Rect(0, 0, 49, 70);
 		mOldRect = new Rect(0, 0, 49, 70);
 	}
@@ -82,6 +84,12 @@ public class Card extends ImageView{
 	}
 	public int getPile(){
 		return mPile;
+	}
+	public void setOldPile(int pile){
+		mOldPile = pile;
+	}
+	public int getOldPile(){
+		return mOldPile;
 	}
 
 }//end class Card

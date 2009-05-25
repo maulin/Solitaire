@@ -1,6 +1,7 @@
 package com.maulinpathare.solitaire;
 
 import java.util.Stack;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,11 +9,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.widget.ScrollView;
 
-public class GameView extends View implements OnTouchListener{
+public class GameView extends View implements OnTouchListener, OnKeyListener{
 	private Deck mD;
 	private boolean mInit, mDone;
 	private Stack<Card> mPile1, mPile2, mPile3, mPile4, mPile5, mPile6, mPile7, 
@@ -26,12 +31,17 @@ public class GameView extends View implements OnTouchListener{
 	private Bitmap tsa1, tsa, tha1, tha, tca1, tca, tda1, tda;
 
 	//called by parent view to get the measurement of a child view
+	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		setMeasuredDimension(480, 400);
 	}
 
 	public GameView(Context context) {
 		super(context);
+        this.setFocusable(true);
+        this.setFocusableInTouchMode(true);
+		this.setOnTouchListener(this);
+		this.setOnKeyListener(this);
 		mD = new Deck(context, context.getResources());
 		mInit = true;
 		mPile1 = new Stack<Card>();
@@ -51,7 +61,6 @@ public class GameView extends View implements OnTouchListener{
 		mDone = false;
 		mCard = new Card(context);
 		mVictory = false;
-		this.setOnTouchListener(this);
 		wonPaint1 = new Paint();
 		wonPaint2 = new Paint();
 		rectPaint1 = new Paint();
@@ -86,7 +95,6 @@ public class GameView extends View implements OnTouchListener{
 		}
 		if(mEndPile1.size() == 13 && mEndPile2.size() == 13 &&
 				mEndPile3.size() == 13 && mEndPile4.size() == 13){
-			//if(mEndPile1.size() == 1){
 				mVictory = true;
 			}
 			if(mVictory == false)
@@ -105,19 +113,19 @@ public class GameView extends View implements OnTouchListener{
 				mCanvas.drawBitmap(tsa, null, r, null);
 				r.set(420, 0, 469, 70);
 				mCanvas.drawBitmap(tha, null, r, null);
-				drawPile(mOpenPile);
-				drawPile(mPile1);
-				drawPile(mPile2);
-				drawPile(mPile3);
-				drawPile(mPile4);
-				drawPile(mPile5);
-				drawPile(mPile6);
-				drawPile(mPile7);
-				drawPile(mEndPile1);
-				drawPile(mEndPile2);
-				drawPile(mEndPile3);
-				drawPile(mEndPile4);
-				drawPile(mTemp);
+				drawPile(mOpenPile, 8);
+				drawPile(mPile1, 1);
+				drawPile(mPile2, 2);
+				drawPile(mPile3, 3);
+				drawPile(mPile4, 4);
+				drawPile(mPile5, 5);
+				drawPile(mPile6, 6);
+				drawPile(mPile7, 7);
+				drawPile(mEndPile1, 9);
+				drawPile(mEndPile2, 10);
+				drawPile(mEndPile3, 11);
+				drawPile(mEndPile4, 12);
+				drawPile(mTemp, 0);
 				if(mPickUp){
 					for(int i = mTemp.size()-1; i >= 0; i--){
 						mCanvas.drawBitmap(mTemp.elementAt(i).getFrontImage(), null, 
@@ -192,7 +200,17 @@ public class GameView extends View implements OnTouchListener{
 		mPile6.peek().setFaceUp();
 		mPile7.peek().setFaceUp();
 	}//end initialize
-
+	
+	@Override
+	public boolean onKey(View v, int keyCode, KeyEvent event){
+		if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+			Log.w("gameview", "inside onkey");
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean onTouch(View v, MotionEvent event){
 		int eventAction = event.getAction();
 		int x = Math.round(event.getX());
@@ -219,7 +237,7 @@ public class GameView extends View implements OnTouchListener{
 				mDone = true;
 			}
 			else if (!mD.empty() && mD.peek().getRect().contains(x, y)){//check if click happens on deck
-				mCard = mD.deal();
+			mCard = mD.deal();
 			mCard.setRect(70, 0, 119, 70);
 			mCard.setmOldRect(70, 0, 119, 70);
 			mCard.setPile(8);
@@ -610,12 +628,19 @@ public class GameView extends View implements OnTouchListener{
 		}
 	}
 
-	private void drawPile(Stack<Card> pile){
+	private void drawPile(Stack<Card> pile, int pileno){
+		Rect r = new Rect();
 		if(pile.empty() == false){
 			for(int i = 0; i < pile.size(); i++){
 				if(pile.elementAt(i).isFaceUp()){
+					r.set(pile.elementAt(i).getRect());
+					if(pileno == 1 || pileno == 2 || pileno == 3 || pileno == 4 ||
+					   pileno == 5 || pileno == 6 || pileno == 7){
+						r.top += 5;
+						r.bottom += 5;
+					}
 					mCanvas.drawBitmap(pile.elementAt(i).getFrontImage(), null,	
-							pile.elementAt(i).getRect(), null);
+							r, null);
 				}
 				else{
 					mCanvas.drawBitmap(pile.elementAt(i).getBackImage(), null, 
