@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
-import android.widget.ScrollView;
 
 public class GameView extends View implements OnTouchListener, OnKeyListener{
 	private Deck mD;
@@ -23,8 +22,8 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 	private Stack<Card> mPile1, mPile2, mPile3, mPile4, mPile5, mPile6, mPile7, 
 	mOpenPile, mEndPile1, mEndPile2, mEndPile3, mEndPile4, mTemp;
 	private Canvas mCanvas;
-	private int mPile;
-	private boolean mPickUp, mVictory;
+	private int mPile, mOldPile, mTempSize;
+	private boolean mPickUp, mVictory, mUndo;
 	private Card mCard;
 	private final int mSpacing = 22;
 	private Paint rectPaint1, wonPaint1, wonPaint2;
@@ -42,6 +41,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
         this.setFocusableInTouchMode(true);
 		this.setOnTouchListener(this);
 		this.setOnKeyListener(this);
+		this.requestFocus();
 		mD = new Deck(context, context.getResources());
 		mInit = true;
 		mPile1 = new Stack<Card>();
@@ -59,6 +59,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 		mTemp = new Stack<Card>();
 		mPickUp = false;
 		mDone = false;
+		mUndo = false;
 		mCard = new Card(context);
 		mVictory = false;
 		wonPaint1 = new Paint();
@@ -202,15 +203,6 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 	}//end initialize
 	
 	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event){
-		if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
-			Log.w("gameview", "inside onkey");
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
 	public boolean onTouch(View v, MotionEvent event){
 		int eventAction = event.getAction();
 		int x = Math.round(event.getX());
@@ -223,7 +215,9 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 			if(mOpenPile.empty() == false && mOpenPile.peek().getRect().contains(x, y)){
 				mPile = 8;
 				mTemp.push(mOpenPile.pop());
+				mOldPile = 8;
 				mPickUp = true;
+				mUndo = true;
 			}
 			else if(mD.empty() && !mOpenPile.empty()){
 				while(mOpenPile.empty() == false){
@@ -235,6 +229,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 				}
 				mPickUp = false;
 				mDone = true;
+				mUndo = false;
 			}
 			else if (!mD.empty() && mD.peek().getRect().contains(x, y)){//check if click happens on deck
 			mCard = mD.deal();
@@ -245,6 +240,10 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 			mOpenPile.push(mCard);
 			mPickUp = false;
 			mDone = true;
+			mPile = 8;
+			mOldPile = 0;
+			mUndo = true;
+			mTempSize = 1;
 			}
 			else{
 				checkTouch(mPile1, 1, x, y);
@@ -297,56 +296,64 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 					if(mEndPile1.isEmpty()){
 						if(mTemp.peek().getRank() == 1){
 							mPile = 9;
-							mTemp.peek().setmOldRect(210, 0, 259, 70);
-							returnCard();
+							mTemp.peek().setRect(210, 0, 259, 70);
+							mEndPile1.push(mTemp.pop());
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 					}
 					else if(mTemp.peek().getRank() - mEndPile1.peek().getRank() == 1){
 						mPile = 9;
-						mTemp.peek().setmOldRect(210, 0, 259, 70);
-						returnCard();
+						mTemp.peek().setRect(210, 0, 259, 70);
+						mEndPile1.push(mTemp.pop());
+						mPickUp = false; mDone = true; mUndo = true;
 					}
 				}
 				if(mDone == false && mTemp.peek().getSuite() == "daimonds"){
 					if(mEndPile2.isEmpty()){
 						if(mTemp.peek().getRank() == 1){
 							mPile = 10;
-							mTemp.peek().setmOldRect(280, 0, 329, 70);
-							returnCard();
+							mTemp.peek().setRect(280, 0, 329, 70);
+							mEndPile2.push(mTemp.pop());
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 					}
 					else if(mTemp.peek().getRank() - mEndPile2.peek().getRank() == 1){
 						mPile = 10;
-						mTemp.peek().setmOldRect(280, 0, 329, 70);
-						returnCard();
+						mTemp.peek().setRect(280, 0, 329, 70);
+						mEndPile2.push(mTemp.pop());
+						mPickUp = false; mDone = true; mUndo = true;
 					}
 				}
 				if(mDone == false && mTemp.peek().getSuite() == "spades"){
 					if(mEndPile3.isEmpty()){
 						if(mTemp.peek().getRank() == 1){
 							mPile = 11;
-							mTemp.peek().setmOldRect(350, 0, 399, 70);
-							returnCard();
+							mTemp.peek().setRect(350, 0, 399, 70);
+							mEndPile3.push(mTemp.pop());
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 					}
 					else if(mTemp.peek().getRank() - mEndPile3.peek().getRank() == 1){
 						mPile = 11;
-						mTemp.peek().setmOldRect(350, 0, 399, 70);
-						returnCard();
+						mTemp.peek().setRect(350, 0, 399, 70);
+						mEndPile3.push(mTemp.pop());
+						mPickUp = false; mDone = true; mUndo = true;
 					}
 				}
 				if(mDone == false && mTemp.peek().getSuite() == "hearts"){
 					if(mEndPile4.isEmpty()){
 						if(mTemp.peek().getRank() == 1){
 							mPile = 12;
-							mTemp.peek().setmOldRect(420, 0, 469, 70);
-							returnCard();
+							mTemp.peek().setRect(420, 0, 469, 70);
+							mEndPile4.push(mTemp.pop());
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 					}
 					else if(mTemp.peek().getRank() - mEndPile4.peek().getRank() == 1){
 						mPile = 12;
-						mTemp.peek().setmOldRect(420, 0, 469, 70);
-						returnCard();
+						mTemp.peek().setRect(420, 0, 469, 70);
+						mEndPile4.push(mTemp.pop());
+						mPickUp = false; mDone = true; mUndo = true;
 					}
 				}
 			}//end mTemp.size == 1
@@ -364,7 +371,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile1.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 2:
@@ -374,7 +385,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile2.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 3:
@@ -384,7 +399,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile3.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 4:
@@ -394,7 +413,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile4.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 5:
@@ -404,7 +427,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile5.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 6:
@@ -414,7 +441,11 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile6.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					case 7:
@@ -424,11 +455,15 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								t.top += mSpacing;
 								t.bottom += mSpacing;
 							}
-							mTemp.elementAt(j).setmOldRect(t);
+							mCard = mTemp.elementAt(j);
+							mCard.setRect(t);
+							mCard.setPile(i);
+							mPile7.push(mCard);
+							mPickUp = false; mDone = true; mUndo = true;
 						}
 						break;
 					}
-					returnCard();
+					mTemp.clear();
 				}
 			}
 
@@ -444,6 +479,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 												(pile.peek().getSuite() == "clubs" || pile.peek().getSuite() == "spades"))){
 							if(pile.peek().getRank() - mTemp.peek().getRank() == 1){
 								Rect t = new Rect();
+								mOldPile = mTemp.peek().getPile();
 								for(int j = mTemp.size()-1; j >= 0; j--){
 									t.set(pile.peek().getRect());
 									t.top += mSpacing;
@@ -454,6 +490,8 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 								}
 								mPickUp = false;
 								mDone = true;
+								mUndo = true;
+								mPile = i;
 								mTemp.clear();
 							}
 							else{
@@ -584,6 +622,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 		}
 		mPickUp = false;
 		mDone = true;
+		mUndo = true;
 	}//end returnCard
 
 	//called when the user clicks on a card
@@ -599,6 +638,7 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 					if(pile.elementAt(i).isFaceUp()){
 						for(int j = pile.size()-1; j >= i; j--){
 							pile.elementAt(j).setmOldRect(pile.elementAt(j).getRect());
+							pile.elementAt(j).setPile(mPile);
 							mTemp.push(pile.elementAt(j));
 						}
 						for(int k = pile.size()-1; k >= i; k--){
@@ -607,12 +647,19 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 					}
 					else{
 						pile.elementAt(i).setFaceUp();
+						pile.elementAt(i).setmOldRect(pile.elementAt(i).getRect());
+						pile.elementAt(i).setPile(mPile);
 						mPickUp = false;
 						mDone = true;
+						mUndo = false;
 					}
 					break;
 				}
 			}
+		}
+		if(mTemp.size() > 0){
+			mTempSize = mTemp.size();
+			mOldPile = mTemp.peek().getPile();
 		}
 	}// end checkTouch
 
@@ -649,4 +696,103 @@ public class GameView extends View implements OnTouchListener, OnKeyListener{
 			}
 		}
 	}//end drawPile
+	
+	@Override
+	public boolean onKey(View v, int keyCode, KeyEvent event){
+		if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+			if(mUndo){
+				Log.w("UNDO", mTempSize + " card from " + mPile + " to " + mOldPile);
+				Stack<Card> pile = new Stack<Card>();
+				Stack<Card> oldPile = new Stack<Card>();
+				if(mPile == 1){
+					pile = mPile1;
+				}
+				if(mPile == 2){
+					pile = mPile2;
+				}
+				if(mPile == 3){
+					pile = mPile3;
+				}
+				if(mPile == 4){
+					pile = mPile4;
+				}
+				if(mPile == 5){
+					pile = mPile5;
+				}
+				if(mPile == 6){
+					pile = mPile6;
+				}
+				if(mPile == 7){
+					pile = mPile7;
+				}
+				if(mPile == 8){
+					pile = mOpenPile;
+				}
+				if(mPile == 9){
+					pile = mEndPile1;
+				}
+				if(mPile == 10){
+					pile = mEndPile2;
+				}
+				if(mPile == 11){
+					pile = mEndPile3;
+				}
+				if(mPile == 12){
+					pile = mEndPile4;
+				}
+				
+				if(mOldPile == 1){
+					oldPile = mPile1;
+				}
+				if(mOldPile == 2){
+					oldPile = mPile2;
+				}
+				if(mOldPile == 3){
+					oldPile = mPile3;
+				}
+				if(mOldPile == 4){
+					oldPile = mPile4;
+				}
+				if(mOldPile == 5){
+					oldPile = mPile5;
+				}
+				if(mOldPile == 6){
+					oldPile = mPile6;
+				}
+				if(mOldPile == 7){
+					oldPile = mPile7;
+				}
+				if(mOldPile == 8){
+					oldPile = mOpenPile;
+				}
+
+				undo(pile, oldPile);
+			}
+			invalidate();
+			return true;
+		}//end KEYCODE_BACK
+		return false;
+	}
+	
+	private void undo(Stack<Card> pile, Stack<Card> oldPile){
+		if(mPile == 8 && mOldPile == 0)
+		{
+			mCard = mOpenPile.pop();
+			mCard.setFaceDown();
+			mCard.setRect(0, 0, 49, 70);
+			mCard.setPile(0);
+			mD.push(mCard);
+		}
+		else{
+			int pileSize = pile.size();
+			for(int i = 0; i < mTempSize; i++ ){
+				mCard = pile.elementAt(pileSize - mTempSize);
+				mCard.setRect(mCard.getmOldRect());
+				mCard.setPile(mOldPile);
+				oldPile.push(mCard);
+				pile.remove(pileSize - mTempSize);
+			}
+		}
+		mUndo = false;
+	}//end undo
 }//end class GameView

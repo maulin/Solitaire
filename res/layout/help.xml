@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent">
+	<TextView 
+		android:text="@string/help" 
+		android:textSize="30px" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+ 		android:height="35px"
+		android:layout_weight="0" 
+		android:gravity="center"/>
+	<TextView 
+		android:text=
+"\n
+- Touch the deck to deal cards.\n
+- Drag and drop the cards.\n
+- Stack cards in a descending sequence of alternating colors.\n
+- For example: You can place a black 9 on a red 10.\n
+- Only kings can be moved to an empty pile.\n
+- Use the arrow keys to scroll the screen.\n
+- Back key to undo previous move."
+		android:textSize="15px"
+		android:height="20px" 
+		android:layout_width="wrap_content" 
+		android:layout_height="fill_parent"
+		android:layout_weight="0" 
+		android:gravity="left"/>
+</LinearLayout>
