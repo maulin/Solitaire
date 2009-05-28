@@ -1,21 +1,18 @@
 package com.maulinpathare.solitaire;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 		
 public class Solitaire extends Activity{
     /** Called when the activity is first created. */
-	private Context mContext;
 	private GameView mGv;
 	private GameScrollView mGsv;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         setContentView(R.layout.main);
     }
 

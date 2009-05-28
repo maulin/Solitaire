@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:admobsdk="http://schemas.android.com/apk/res/com.maulinpathare.solitaire"
 	android:orientation="vertical" 
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
@@ -35,4 +37,18 @@
  		android:height="12px"
 		android:layout_weight="1" 
 		android:gravity="center"/>
+		<!-- Place an AdMob ad at the bottom of the screen. -->
+        <!-- It has white text on a black background. -->
+        <!-- The description of the surrounding context is 'Android game'. -->
+        <com.admob.android.ads.AdView
+          android:id="@+id/ad" 
+          android:visibility="visible"
+          android:layout_width="fill_parent" 
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          admobsdk:backgroundColor="#000000"
+          admobsdk:textColor="#FFFFFF"
+          admobsdk:keywords="android games ringtones wallpapers"
+        />
+        <!-- We could append app:testing="true" above to always get the test ad back -->
 </LinearLayout>
